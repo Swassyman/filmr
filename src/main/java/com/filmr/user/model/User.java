@@ -5,43 +5,44 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String name;
-	String handle;
-	String email;
-	String passHash;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-	public Long getId() {
-		return id;
-	}
+  String name;
+  String handle;
+  String email;
+  String passHash;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getHandle() {
-		return handle;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setHandle(String handle) {
-		this.handle = handle;
-	}
+  public String getHandle() {
+    return handle;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public void setHandle(String handle) {
+    this.handle = handle;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }

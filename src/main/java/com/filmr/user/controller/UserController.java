@@ -25,4 +25,20 @@ public class UserController {
   public ResponseEntity<List<User>> findAll() {
     return ResponseEntity.ok(userService.findAll());
   }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<User> findUserById(@PathVariable Long id) {
+    return ResponseEntity.ok(userService.findUserById(id));
+  }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    return ResponseEntity.accepted().body(userService.updateUser(id, updatedUser));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    userService.deleteUser(id);
+    return ResponseEntity.noContent().build();
+  }
 }

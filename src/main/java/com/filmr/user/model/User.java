@@ -1,17 +1,18 @@
 package com.filmr.user.model;
 
+import com.filmr.AuditableEntity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends AuditableEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  private Long id;
 
-  String name;
-  String email;
-  String passHash;
+  private String name;
+  private String email;
+  private String passHash;
 
   public Long getId() {
     return id;

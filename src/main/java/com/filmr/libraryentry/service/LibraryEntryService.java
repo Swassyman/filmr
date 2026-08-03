@@ -2,47 +2,52 @@ package com.filmr.libraryentry.service;
 
 import com.filmr.libraryentry.model.LibraryEntry;
 import com.filmr.libraryentry.repository.LibraryEntryRepository;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LibraryEntryService {
-  private LibraryEntryRepository libraryEntryRepository;
+	private final LibraryEntryRepository libraryEntryRepository;
 
-  public LibraryEntry addLibraryEntry(LibraryEntry libraryEntry) {
-    if (libraryEntryRepository.existsById(libraryEntry.getId())) {
-      throw new RuntimeException("Entry with this ID already exists");
-    }
+	LibraryEntryService(LibraryEntryRepository libraryEntryRepository) {
+		this.libraryEntryRepository = libraryEntryRepository;
+	}
 
-    return libraryEntryRepository.save(libraryEntry);
-  }
+	public LibraryEntry addLibraryEntry(LibraryEntry libraryEntry) {
+		if (libraryEntryRepository.existsById(libraryEntry.getId())) {
+			throw new RuntimeException("Entry with this ID already exists");
+		}
 
-  public List<LibraryEntry> getLibraryEntries(Long userId) {
-    return libraryEntryRepository.findAllByUserId(userId);
-  }
+		return libraryEntryRepository.save(libraryEntry);
+	}
 
-  public LibraryEntry getLibraryEntryById(Long id) {
-    return libraryEntryRepository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Entry doesn't exist"));
-  }
+	public List<LibraryEntry> getLibraryEntries(Long userId) {
+		return libraryEntryRepository.findAllByUserId(userId);
+	}
 
-  public void updateLibraryEntry(Long id, LibraryEntry updatedLibraryEntry) {
-    LibraryEntry entry = getLibraryEntryById(id);
+	public LibraryEntry getLibraryEntryById(Long id) {
+		return libraryEntryRepository
+				.findById(id)
+				.orElseThrow(() -> new RuntimeException("Entry doesn't exist"));
+	}
 
-    if (updatedLibraryEntry.getMediaType() != null)
-      entry.setMediaType(updatedLibraryEntry.getMediaType());
-    if (updatedLibraryEntry.getStatus() != null) entry.setStatus(updatedLibraryEntry.getStatus());
-    if (updatedLibraryEntry.getRating() != null) entry.setRating(updatedLibraryEntry.getRating());
-    entry.setFavorite(updatedLibraryEntry.isFavorite());
-    if (updatedLibraryEntry.getReview() != null) entry.setReview(updatedLibraryEntry.getReview());
+	public LibraryEntry updateLibraryEntry(Long id, LibraryEntry updatedLibraryEntry) {
+		LibraryEntry entry = getLibraryEntryById(id);
 
-    libraryEntryRepository.save(entry);
-  }
+		if (updatedLibraryEntry.getMediaType() != null)
+			entry.setMediaType(updatedLibraryEntry.getMediaType());
+		if (updatedLibraryEntry.getStatus() != null) entry.setStatus(updatedLibraryEntry.getStatus());
+		if (updatedLibraryEntry.getRating() != null) entry.setRating(updatedLibraryEntry.getRating());
+		entry.setFavorite(updatedLibraryEntry.isFavorite());
+		if (updatedLibraryEntry.getReview() != null) entry.setReview(updatedLibraryEntry.getReview());
 
-  public void deleteLibraryEntry(Long id) {
-    LibraryEntry entry = getLibraryEntryById(id);
+		return libraryEntryRepository.save(entry);
+	}
 
-    libraryEntryRepository.delete(entry);
-  }
+	public void deleteLibraryEntry(Long id) {
+		LibraryEntry entry = getLibraryEntryById(id);
+
+		libraryEntryRepository.delete(entry);
+	}
 }

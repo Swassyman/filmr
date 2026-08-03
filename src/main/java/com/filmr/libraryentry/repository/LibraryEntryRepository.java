@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LibraryEntryRepository extends JpaRepository<LibraryEntry, Long> {
   List<LibraryEntry> findAllByUserId(Long userId);
+
+  boolean existsByMediaId(Long mediaId);
 }

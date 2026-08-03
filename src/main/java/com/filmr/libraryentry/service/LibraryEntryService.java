@@ -1,7 +1,9 @@
 package com.filmr.libraryentry.service;
 
+import com.filmr.library.enums.WatchStatus;
 import com.filmr.libraryentry.model.LibraryEntry;
 import com.filmr.libraryentry.repository.LibraryEntryRepository;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,12 @@ public class LibraryEntryService {
   }
 
   public LibraryEntry addLibraryEntry(LibraryEntry libraryEntry) {
-    if (libraryEntryRepository.existsById(libraryEntry.getId())) {
+    if (libraryEntryRepository.existsByMediaId(libraryEntry.getMediaId())) {
       throw new RuntimeException("Entry with this ID already exists");
+    }
+
+    if (libraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
+      libraryEntry.setCompletedAt(Instant.now());
     }
 
     return libraryEntryRepository.save(libraryEntry);
@@ -40,6 +46,10 @@ public class LibraryEntryService {
     if (updatedLibraryEntry.getRating() != null) entry.setRating(updatedLibraryEntry.getRating());
     entry.setFavorite(updatedLibraryEntry.isFavorite());
     if (updatedLibraryEntry.getReview() != null) entry.setReview(updatedLibraryEntry.getReview());
+    if (entry.getWatchStatus() != WatchStatus.WATCHED
+        && updatedLibraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
+      entry.setCompletedAt(Instant.now());
+    }
 
     return libraryEntryRepository.save(entry);
   }

@@ -63,14 +63,6 @@ public class LibraryEntry {
     this.mediaType = mediaType;
   }
 
-  public WatchStatus getStatus() {
-    return watchStatus;
-  }
-
-  public void setStatus(WatchStatus watchStatus) {
-    this.watchStatus = watchStatus;
-  }
-
   public boolean isFavorite() {
     return favorite;
   }

@@ -22,6 +22,8 @@ public class LibraryEntryService {
 
     if (libraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
       libraryEntry.setCompletedAt(Instant.now());
+    } else if (libraryEntry.getWatchStatus() == WatchStatus.WATCHING) {
+      libraryEntry.setStartedAt(Instant.now());
     }
 
     return libraryEntryRepository.save(libraryEntry);
@@ -42,13 +44,15 @@ public class LibraryEntryService {
 
     if (updatedLibraryEntry.getMediaType() != null)
       entry.setMediaType(updatedLibraryEntry.getMediaType());
-    if (updatedLibraryEntry.getStatus() != null) entry.setStatus(updatedLibraryEntry.getStatus());
     if (updatedLibraryEntry.getRating() != null) entry.setRating(updatedLibraryEntry.getRating());
     entry.setFavorite(updatedLibraryEntry.isFavorite());
     if (updatedLibraryEntry.getReview() != null) entry.setReview(updatedLibraryEntry.getReview());
-    if (entry.getWatchStatus() != WatchStatus.WATCHED
-        && updatedLibraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
-      entry.setCompletedAt(Instant.now());
+
+    // todo: keeping history of everytime you watch something
+    if (entry.getWatchStatus() != updatedLibraryEntry.getWatchStatus()) {
+      if (updatedLibraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
+        entry.setCompletedAt(Instant.now());
+      }
     }
 
     return libraryEntryRepository.save(entry);

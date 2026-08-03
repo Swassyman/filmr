@@ -1,6 +1,6 @@
 package com.filmr.library.enums;
 
-public enum STATUS {
+public enum WatchStatus {
   PLAN_TO_WATCH,
   WATCHING,
   WATCHED,

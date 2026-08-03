@@ -3,6 +3,7 @@ package com.filmr.libraryentry.controller;
 import com.filmr.libraryentry.model.LibraryEntry;
 import com.filmr.libraryentry.service.LibraryEntryService;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ public class LibraryEntryController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<List<LibraryEntry>> getLibraryEntries(@PathVariable Long userId) {
-    return ResponseEntity.ok(libraryEntryService.getLibraryEntries(userId));
+  public ResponseEntity<List<LibraryEntry>> getLibraryEntries(@PathVariable Long id) {
+    return ResponseEntity.ok(libraryEntryService.getLibraryEntries(id));
   }
 
   @GetMapping("/entry/{id}")
@@ -28,13 +29,14 @@ public class LibraryEntryController {
 
   @PostMapping("/entry")
   public ResponseEntity<LibraryEntry> addLibraryEntry(@RequestBody LibraryEntry entry) {
-    return ResponseEntity.ok(libraryEntryService.addLibraryEntry(entry));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(libraryEntryService.addLibraryEntry(entry));
   }
 
   @PatchMapping("/entry/{id}")
   public ResponseEntity<LibraryEntry> updateLibraryEntry(
       @PathVariable Long id, @RequestBody LibraryEntry entry) {
-    return ResponseEntity.accepted().body(libraryEntryService.updateLibraryEntry(id, entry));
+    return ResponseEntity.ok(libraryEntryService.updateLibraryEntry(id, entry));
   }
 
   @DeleteMapping("/entry/{id}")

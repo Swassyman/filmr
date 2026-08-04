@@ -1,6 +1,8 @@
 package com.filmr.user.controller;
 
-import com.filmr.user.model.User;
+import com.filmr.user.dto.request.CreateUserRequest;
+import com.filmr.user.dto.request.UpdateUserRequest;
+import com.filmr.user.dto.response.UserResponse;
 import com.filmr.user.service.UserService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -17,23 +19,24 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody User user) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
+  public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
   }
 
   @GetMapping
-  public ResponseEntity<List<User>> findAll() {
+  public ResponseEntity<List<Long>> findAll() {
     return ResponseEntity.ok(userService.findAll());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> findUserById(@PathVariable Long id) {
+  public ResponseEntity<UserResponse> findUserById(@PathVariable Long id) {
     return ResponseEntity.ok(userService.findUserById(id));
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-    return ResponseEntity.accepted().body(userService.updateUser(id, updatedUser));
+  public ResponseEntity<UserResponse> updateUser(
+      @PathVariable Long id, @RequestBody UpdateUserRequest request) {
+    return ResponseEntity.accepted().body(userService.updateUser(id, request));
   }
 
   @DeleteMapping("/{id}")

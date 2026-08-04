@@ -1,5 +1,8 @@
 package com.filmr.user.service;
 
+import com.filmr.user.dto.request.CreateUserRequest;
+import com.filmr.user.dto.request.UpdateUserRequest;
+import com.filmr.user.dto.response.UserResponse;
 import com.filmr.user.model.User;
 import com.filmr.user.repository.UserRepository;
 import java.util.List;
@@ -13,41 +16,58 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public List<User> findAll() {
-    return userRepository.findAll();
+  public List<Long> findAll() {
+    return userRepository.findAll().stream().map(User::getId).toList();
   }
 
-  public User createUser(User user) {
-    if (userRepository.existsByEmail(user.getEmail())) {
+  public UserResponse createUser(CreateUserRequest request) {
+    if (userRepository.existsByEmail(request.email())) {
       throw new RuntimeException("User with email already exists");
     }
 
-    return userRepository.save(user);
+    User user = new User();
+    user.setEmail(request.email());
+    user.setName(request.name());
+    // todo: encoding password
+    user.setPassHash(request.password());
+    User saved = userRepository.save(user);
+
+    return UserResponse.from(saved);
   }
 
-  public User findUserByEmail(String email) {
-    return userRepository
-        .findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+  public UserResponse findUserByEmail(String email) {
+    User user =
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+
+    return UserResponse.from(user);
   }
 
-  public User findUserById(Long id) {
-    return userRepository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+  public UserResponse findUserById(Long id) {
+    User user =
+        userRepository.findById(id).orElseThrow(() -> new RuntimeException("User doesn't exist"));
+
+    return UserResponse.from(user);
   }
 
-  public User updateUser(Long id, User updatedUser) {
-    User user = findUserById(id);
+  public UserResponse updateUser(Long id, UpdateUserRequest request) {
+    User user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("User with the id doesn't exist"));
 
-    if (updatedUser.getName() != null) user.setName(updatedUser.getName());
-    if (updatedUser.getPassHash() != null) user.setPassHash(updatedUser.getPassHash());
+    if (request.name() != null) user.setName(request.name());
+    if (request.password() != null) user.setPassHash(request.password());
 
-    return userRepository.save(user);
+    return UserResponse.from(user);
   }
 
   public void deleteUser(Long id) {
-    User user = findUserById(id);
+    User user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("User with the id doesn't exist"));
 
     userRepository.delete(user);
   }

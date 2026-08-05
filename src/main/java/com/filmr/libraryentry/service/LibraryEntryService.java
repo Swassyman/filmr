@@ -56,10 +56,9 @@ public class LibraryEntryService {
     if (updatedLibraryEntry.getReview() != null) entry.setReview(updatedLibraryEntry.getReview());
 
     // todo: keeping history of everytime you watch something
-    if (entry.getWatchStatus() != updatedLibraryEntry.getWatchStatus()) {
-      if (updatedLibraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
-        entry.setCompletedAt(Instant.now());
-      }
+    if (entry.getWatchStatus() != updatedLibraryEntry.getWatchStatus()
+        && updatedLibraryEntry.getWatchStatus() == WatchStatus.WATCHED) {
+      entry.setCompletedAt(Instant.now());
     }
 
     return libraryEntryRepository.save(entry);

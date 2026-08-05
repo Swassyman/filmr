@@ -1,13 +1,13 @@
-name: Maven CI
+name: Maven Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -41,9 +41,8 @@ jobs:
           java-version: 21
           cache: maven
 
+      - name: Run Tests
+        run: mvn -B test
 
-      - name: Check formatting
-        run: mvn -B spotless:check
-        
-      - name: Build and Test
-        run: mvn -B clean verify
+      - name: Run Integeration Test
+        run: mvn -B verify

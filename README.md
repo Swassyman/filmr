@@ -45,34 +45,6 @@ The application is built using Java and Spring Boot with PostgreSQL. (purely cau
 
 ---
 
-## System Architecture
-
-> For all the tech nerds who would like to question my sanity,
-
-```text
-                 ┌────────────┐
-                 │   Client   │
-                 └─────┬──────┘
-                       │
-                       ▼
-               ┌──────────────┐
-               │   Library    │
-               └─────┬────────┘
-                     │
-                     ▼
-      ┌────────────────────────────────┐
-      │ Backend + Media API            │
-      │ (probably TMDB)                │
-      └──────────────┬─────────────────┘
-                     │
-                     ▼
-            ┌─────────────────┐
-            │ PostgreSQL      │
-            └─────────────────┘
-```
-
----
-
 ## Technology Stack
 
 | Component       | Technology                  |

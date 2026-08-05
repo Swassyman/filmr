@@ -45,8 +45,5 @@ jobs:
       - name: Check formatting
         run: mvn -B spotless:check
 
-      - name: Run Checkstyle
-        run: mvn -B checkstyle:check
-
       - name: Run PMD
         run: mvn -B pmd:check

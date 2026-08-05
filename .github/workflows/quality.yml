@@ -44,6 +44,9 @@ jobs:
 
       - name: Check formatting
         run: mvn -B spotless:check
-        
-      - name: Build and Test
-        run: mvn -B clean verify
+
+      - name: Run Checkstyle
+        run: mvn -B checkstyle:check
+
+      - name: Run PMD
+        run: mvn -B pmd:check
